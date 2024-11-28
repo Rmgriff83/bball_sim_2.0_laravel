@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -20,14 +21,32 @@ class UserController extends Controller
         } catch(\Exception $e){
             return response()->json([
                 "success" => false,
-                "msg" => "error"
+                "msg" => "error creating new user"
+            ]);
+        }
+
+        try {
+            $credentials = request()->validate([
+                'email' => ['required', 'email'],
+                'password' => ['required'],
+            ]);
+    
+            Auth::attempt($credentials);
+            $user = Auth::user();
+            $token = $user->createToken('bball_sim_2.0_vue');
+        } catch(\Exception $e) {
+            return response()->json([
+                "success" => false,
+                "msg" => "error with auto login of new user"
             ]);
         }
 
 
         return response()->json([
             "success" => true,
-            "msg" => "user successfully created"
+            "msg" => "user successfully created",
+            "user" => $user,
+            "token" => $token
         ]);
     }
 }
