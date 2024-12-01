@@ -3,14 +3,24 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\AllTeams;
 
 class TeamController extends Controller
 {
     //
-    public function get(){
+    public function getAllTeams(){
+        try {
+            $allTeams = AllTeams::all();
+        } catch(\Exception $e) {
+            return response()->json([
+                "success" => false,
+                "msg" => "error getting all teams"
+            ]);
+        }
+
         return response()->json([
-            "hmm" => "ight",
-            "req" => request()->team
+            "success" => true,
+            "all_teams" => json_encode($allTeams)
         ]);
     }
 }

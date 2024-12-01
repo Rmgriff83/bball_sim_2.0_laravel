@@ -14,7 +14,7 @@ Route::middleware([Cors::class])->group(function () {
     Route::get('/check', [AuthenticationController::class, 'check'])->middleware('auth:sanctum');
     Route::post('/logout', [AuthenticationController::class, 'logout'])->middleware('auth:sanctum');
 
-    Route::get('/team', [TeamController::class, 'get'])->middleware('auth:sanctum');
+    Route::get('/all_teams', [TeamController::class, 'getAllTeams']);
 });
 
 // Route::get('/user', function (Request $request) {
