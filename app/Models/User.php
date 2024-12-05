@@ -7,6 +7,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Support\Facades\Auth;
+use App\Models\UserTeam;
+use App\Models\AllTeams;
 
 class User extends Authenticatable
 {
@@ -45,5 +48,10 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function team( $campaign_id ) {
+        $userTeam = UserTeam::where('campaign_id', $campaign_id)->where('user_id', Auth::user()->id)->firstOrFail();
+        return AllTeams::where('id', $userTeam->team_id)->firstOrFail();
     }
 }

@@ -13,6 +13,8 @@ class UserTeam extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'team_object'
+        "user_id",
+        "team_id",
+        "campaign_id"
     ];
 }

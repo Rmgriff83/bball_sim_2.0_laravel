@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\UserTeam;
 use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
@@ -47,6 +48,60 @@ class UserController extends Controller
             "msg" => "user successfully created",
             "user" => $user,
             "token" => $token
+        ]);
+    }
+
+    public function selectTeam() {
+        $req = request()->all();
+
+        try {
+            $user = Auth::user();
+
+            UserTeam::create([
+                "user_id" => $user->id,
+                "team_id" => $req['team_id'],
+                "campaign_id" => $req['campaign_id']
+            ]);
+        } catch(\Exception $e) {
+            return response()->json([
+                "success" => false,
+                "msg" => "user team creation failed",
+                "e" => $e
+            ]);
+        }
+
+        return response()->json([
+            "success" => true,
+            "msg" => "team added successfully!",
+        ]);
+    }
+
+    public function getCampaigns() {
+        return response()->json([
+            "hi" => "wrld"
+        ]);
+    }
+
+    public function getTeam() {
+        $req = request()->all();
+
+        try {
+            $user = Auth::user();
+            $userTeam = $user->team($req['campaign_id']);
+            
+        } catch (\Exception $e){
+            return response()->json([
+                "success" => false,
+                "msg" => "error finding user team",
+                "error" => $e->getMessage(),
+                "req" => $req
+            ]);
+        }
+
+        return response()->json([
+            "success" => true,
+            "msg" => "user team found",
+            "user_team" => $userTeam
         ]);
     }
 }
