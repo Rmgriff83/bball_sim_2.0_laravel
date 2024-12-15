@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Models\UserTeam;
 
 class AuthenticationController extends Controller
 {
@@ -25,28 +24,27 @@ class AuthenticationController extends Controller
                 $token = $user->createToken('bball_sim_2.0_vue');
             }
 
-            try {
-                $user_team = UserTeam::where('user_id', $user->id)->firstOrFail();
+            // try {
+            //     $user_team = UserTeam::where('user_id', $user->id)->firstOrFail();
 
-            } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
-                return response()->json([
-                    "success" => true,
-                    "user" => $user,
-                    "token" => $token,
-                    "msg" => "team not found"
-                ]);
-            } catch (\Exception $e) {
-                return response()->json([
-                    "success" => false,
-                    "req" => $req,
-                    "msg" => "error finding team"
-                ]);
-            }
+            // } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            //     return response()->json([
+            //         "success" => true,
+            //         "user" => $user,
+            //         "token" => $token,
+            //         "msg" => "team not found"
+            //     ]);
+            // } catch (\Exception $e) {
+            //     return response()->json([
+            //         "success" => false,
+            //         "req" => $req,
+            //         "msg" => "error finding team"
+            //     ]);
+            // }
 
             return response()->json([
                 "success" => true,
                 "user" => $user,
-                "team" => $user_team,
                 "token" => $token,
             ]);
         }

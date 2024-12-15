@@ -62,6 +62,20 @@ class UserController extends Controller
                 "team_id" => $req['team_id'],
                 "campaign_id" => $req['campaign_id']
             ]);
+
+            // $userTeam = $user->team($req['campaign_id']);
+            // if( !isset($userTeam) ) {
+            //     UserTeam::create([
+            //         "user_id" => $user->id,
+            //         "team_id" => $req['team_id'],
+            //         "campaign_id" => $req['campaign_id']
+            //     ]);
+            // } else {
+            //     return response()->json([
+            //         "success" => false,
+            //         "msg" => "user team already created for this campaign"
+            //     ]);
+            // }
         } catch(\Exception $e) {
             return response()->json([
                 "success" => false,
@@ -77,8 +91,22 @@ class UserController extends Controller
     }
 
     public function getCampaigns() {
+        $user = Auth::user();
+
+        try {
+            $campaigns = $user->campaigns();
+        } catch (\Exception $e) {
+            return respons()->json([
+                "success" => false,
+                "msg" => "failed getting user campaigns"
+            ]);
+        }
+
         return response()->json([
-            "hi" => "wrld"
+            "success" => true,
+            "msg" => "user campaigns found",
+            "user_campaigns" => $campaigns,
+            "user" => $user
         ]);
     }
 

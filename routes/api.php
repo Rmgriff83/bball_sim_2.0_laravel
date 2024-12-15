@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\Cors;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AuthenticationController;
+use App\Http\Controllers\CampaignController;
 use App\Http\Controllers\TeamController;
 
  
@@ -14,9 +15,10 @@ Route::middleware([Cors::class])->group(function () {
     Route::get('/check', [AuthenticationController::class, 'check'])->middleware('auth:sanctum');
     Route::post('/logout', [AuthenticationController::class, 'logout'])->middleware('auth:sanctum');
 
+    Route::post('/create_campaign', [CampaignController::class, 'createCampaign'])->middleware('auth:sanctum');
     Route::get('/all_teams', [TeamController::class, 'getAllTeams'])->middleware('auth:sanctum');
     Route::post('/select_team', [UserController::class, 'selectTeam'])->middleware('auth:sanctum');
-    Route::get('/user_campaigns', [UserController::class, 'getUserCampaigns'])->middleware('auth:sanctum');
+    Route::get('/user_campaigns', [UserController::class, 'getCampaigns'])->middleware('auth:sanctum');
     Route::post('/user_team', [UserController::class, 'getTeam'])->middleware('auth:sanctum');
 });
 
